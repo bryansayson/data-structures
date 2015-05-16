@@ -1,7 +1,14 @@
 describe('hashTable', function() {
   var hashTable;
-  var people = [['Steven', 'Tyler'], ['George', 'Harrison'], ['Mr.', 'Doob'], ['Dr.', 'Sunshine'], ['John', 'Resig'], ['Brendan', 'Eich'], ['Alan', 'Turing']];
-
+  var people = [
+    ['Steven', 'Tyler'],
+    ['George', 'Harrison'],
+    ['Mr.', 'Doob'],
+    ['Dr.', 'Sunshine'],
+    ['John', 'Resig'],
+    ['Brendan', 'Eich'],
+    ['Alan', 'Turing']
+  ];
 
   beforeEach(function() {
     hashTable = new HashTable();
@@ -29,11 +36,13 @@ describe('hashTable', function() {
     expect(hashTable.retrieve('Steven')).to.equal(null);
   });
 
-  it('should handle hash function collisions', function(){
+  it('should handle hash function collisions', function() {
     var v1 = "val1";
     var v2 = "val2";
     var oldHashFunction = window.getIndexBelowMaxForKey;
-    window.getIndexBelowMaxForKey = function() { return 0; };
+    window.getIndexBelowMaxForKey = function() {
+      return 0;
+    };
     hashTable.insert(v1, v1);
     hashTable.insert(v2, v2);
     expect(hashTable.retrieve(v1)).to.equal(v1);
@@ -42,18 +51,20 @@ describe('hashTable', function() {
   });
 
   // (Extra credit! Remove the extra "x" when you want the following tests to run)
-  xit('should double in size when needed', function() {
+  it('should double in size when needed', function() {
     _.each(people, function(person) {
-      var firstName = person[0], lastName = person[1];
-      hashTable.insert(firstName,lastName);
+      var firstName = person[0],
+        lastName = person[1];
+      hashTable.insert(firstName, lastName);
     });
     expect(hashTable._limit).to.equal(16);
   });
 
-  xit('should halve in size when needed', function() {
+  it('should halve in size when needed', function() {
     _.each(people, function(person) {
-      var firstName = person[0], lastName = person[1];
-      hashTable.insert(firstName,lastName);
+      var firstName = person[0],
+        lastName = person[1];
+      hashTable.insert(firstName, lastName);
     });
     expect(hashTable._limit).to.equal(16);
     hashTable.remove('George');

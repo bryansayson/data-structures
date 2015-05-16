@@ -13,35 +13,35 @@ var Queue = function() {
 
 var queueMethods = {
 
-  enqueue: function(value) {
+  // enqueue: function(value) {
+  //   this[this.counter] = value;
+  //   this.counter++;
+  // },
+
+  // dequeue: function() {
+  //   if (this.handled < this.counter) {
+  //     this.handled++;
+  //   }
+  //   return this[this.handled - 1];
+  // },
+
+  // size: function() {
+  //   return this.counter - this.handled;
+  // }
+
+};
+
+queueMethods["enqueue"] = function(value){
     this[this.counter] = value;
     this.counter++;
-  },
+  };
 
-  dequeue: function() {
+queueMethods[dequeue] = function(){
     if (this.handled < this.counter) {
       this.handled++;
     }
     return this[this.handled - 1];
-  },
-
-  size: function() {
+  };
+  queueMethods[size] = function(){
     return this.counter - this.handled;
-  }
-
-};
-
-// queueMethods[enqueue] = function(value){
-//     this[this.counter] = value;
-//     this.counter++;
-//   };
-
-// queueMethods[dequeue] = function(){
-//     if (this.handled < this.counter) {
-//       this.handled++;
-//     }
-//     return this[this.handled - 1];
-//   };
-//   queueMethods[size] = function(){
-//     return this.counter - this.handled;
-//   };
+  };
