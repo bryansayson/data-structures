@@ -6,8 +6,7 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
-console.log("limit" + this._limit);
-console.log("length" + this._length);
+
   var i = getIndexBelowMaxForKey(k, this._limit);
   var tempArray = [k,v];
 
@@ -62,36 +61,39 @@ HashTable.prototype.remove = function(k) {
   this._length--;
   var i = getIndexBelowMaxForKey(k, this._limit);
   var limitHalved = this._limit / 2;
-    ///////// HALVING START
+    /////// HALVING START
 
-  //   if ( this._length  <= limitHalved - 1 ) {
-  //     console.log("RUN");
-  //     console.log("limit" + this._limit);
-  //     console.log("length" + this._length);
-  //     this._limit /= 2;
-  //     var tempStorage = [];
+    if ( this._length  <= limitHalved - 1 ) {
+  
+      this._limit /= 2;
+      var tempStorage = [];
 
-  //     for ( var key in this._storage ) {
-  //       if ( Array.isArray( this._storage[ key ] )) {
-  //         _.each( this._storage[key], function( tuple ) {
-  //           tempStorage.push(tuple);
-  //         });
-  //       }
-  //     }
+      for ( var key in this._storage ) {
+        if ( Array.isArray( this._storage[ key ] )) {
+          _.each( this._storage[key], function( tuple ) {
+            tempStorage.push(tuple);
+          });
+        }
+      }
 
-  //   this._storage = LimitedArray(this._limit);
-  //   // this._length = 0;
-  //   for (var x = 0; x < tempStorage.length; x++) {
+    this._storage = LimitedArray(this._limit);   
+    for (var x = 0; x < tempStorage.length; x++) {
+      
+      var i = getIndexBelowMaxForKey([x][0], this._limit);
+      var tempArray = [ tempStorage[x][0], tempStorage[x][1] ];
       
 
+      if ( !this._storage[i] ) {
+        this._storage[i] = [];
+      }
 
-  //     // this.insert(tempStorage[x][0], tempStorage[x][1]);
-  //   }   
-  // }
-  //   console.log("limit" + this._limit);
-  //     console.log("length" + this._length);
+      this._storage[i].push(tempArray);
+      this._length++;
 
-    ///////// HALVING END 
+    }   
+  }
+
+    /////// HALVING END 
 
 
       _.each (this._storage[i], function (array, index, list) {
@@ -103,6 +105,10 @@ HashTable.prototype.remove = function(k) {
   
 
 };
+
+    // console.log("RUN");
+    //   console.log("limit" + this._limit);
+    //   console.log("length" + this._length);
 
 /*
  * Complexity: What is the time complexity of the above functions?
