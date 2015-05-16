@@ -21,6 +21,10 @@ describe('linkedList', function() {
     expect(linkedList.tail.value).to.equal(4);
     linkedList.addToTail(5);
     expect(linkedList.tail.value).to.equal(5);
+    linkedList.addToTail(6);
+    expect(linkedList.tail.value).to.equal(6);
+    linkedList.addToTail(7);
+    expect(linkedList.tail.value).to.equal(7);
   });
 
   it('should remove the head from the list when removeHead is called', function(){
@@ -52,4 +56,19 @@ describe('linkedList', function() {
   });
 
   // add more tests here to test the functionality of linkedList
+   it('EXTRA CREDIT: write a function addToHead that takes a value and adds it to the head. also removeTail', function() {
+    expect(linkedList.addToHead).to.be.a("function");
+    expect(linkedList.removeTail).to.be.a("function");
+  });
+
+   it('EXTRA CREDIT: should add a head', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToHead(9);
+    expect(linkedList.head.value).to.be.equal(9);
+    linkedList.addToHead(88);
+    expect(linkedList.head.value).to.be.equal(88);
+  });
+
+
 });

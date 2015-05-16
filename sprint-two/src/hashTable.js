@@ -2,7 +2,6 @@ var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
   this._length = 0;
-
 };
 
 HashTable.prototype.insert = function(k, v) {
@@ -34,7 +33,6 @@ HashTable.prototype.insert = function(k, v) {
       this.insert(tempStorage[x][0], tempStorage[x][1]);
     }   
   }
-    
 
     ///////// DOUBLING END
 
@@ -82,7 +80,6 @@ HashTable.prototype.remove = function(k) {
       var i = getIndexBelowMaxForKey([x][0], this._limit);
       var tempArray = [ tempStorage[x][0], tempStorage[x][1] ];
       
-
       if ( !this._storage[i] ) {
         this._storage[i] = [];
       }
