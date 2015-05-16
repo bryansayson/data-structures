@@ -2,97 +2,126 @@ var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
   this._length = 0;
+
 };
 
 HashTable.prototype.insert = function(k, v) {
-  console.log(this._storage);
-  if (this._length >= this._limit - 2) {
-    this._limit = this._limit * 2;
-    var tempStorage = [];
-
-    for (var key in this._storage) {
-      for (var i = 0; i < this._storage[key].length; i++) {
-        if (Array.isArray(this._storage[key][i])) {
-          tempStorage.push(this._storage[key][i]);
-        };
-      }
-    };
-    this._storage = LimitedArray(this._limit);
-    for (var i = 0; i < tempStorage.length; i++) {
-      this.insert(tempStorage[i][0], tempStorage[i][1]);
-    };
-  }
-  //
-
+console.log("limit" + this._limit);
+console.log("length" + this._length);
   var i = getIndexBelowMaxForKey(k, this._limit);
-  if (this._storage[i] === undefined) {
-    this._storage[i] = [];
-  }
-  var temp = [k, v];
-  this._storage[i].push(temp);
-  this._length++;
+  var tempArray = [k,v];
 
+    if ( !this._storage[i] ) {
+      this._storage[i] = [];
+    }
+
+    ///////// DOUBLING START
+
+    if ( this._length >= this._limit - 2) {
+      this._limit *= 2;
+      var tempStorage = [];
+      for ( var key in this._storage ) {
+        if ( Array.isArray( this._storage[ key ] )) {
+          _.each( this._storage[key], function( tuple ) {
+            tempStorage.push(tuple);
+          });
+        }
+      }
+
+    this._storage = LimitedArray(this._limit);
+    this._length = 0;
+
+    for (var x = 0; x < tempStorage.length; x++) {
+      this.insert(tempStorage[x][0], tempStorage[x][1]);
+    }   
+  }
+    
+
+    ///////// DOUBLING END
+
+  this._storage[i].push(tempArray);
+  this._length++;
 };
 
 HashTable.prototype.retrieve = function(k) {
+
   var i = getIndexBelowMaxForKey(k, this._limit);
-  for (var z = 0; z < this._storage[i].length; z++)
-    console.log("WHAT IS 0")
-    console.log("ZZZZ :" + i);
-    console.log(this._storage[i][0]);
-    if (this._storage[i][z][0] === k) {
-      return this._storage[i][z][1];
-    }
+  var retrieved = null;
+
+      _.each (this._storage[i], function (array) {
+        if ( array[0] === k ) {
+          retrieved = array[1]; 
+        }
+      });
+
+    return retrieved;
 
 };
 
 HashTable.prototype.remove = function(k) {
+  this._length--;
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  var limitHalved = this._limit / 2;
+    ///////// HALVING START
 
-  this._length -= 1;
-  // console.log("limit: " + this._limit);
-  // console.log("length: " + this._length);
-  // if (this._length <= (this._limit / 2) + 1) {
-  //   console.log("HALVING");
-  //   this._limit = this._limit / 2;
-  //   console.log("new limit: " + this._limit);
-  //   var tempStorage = [];
+  //   if ( this._length  <= limitHalved - 1 ) {
+  //     console.log("RUN");
+  //     console.log("limit" + this._limit);
+  //     console.log("length" + this._length);
+  //     this._limit /= 2;
+  //     var tempStorage = [];
 
-  //   for (var key in this._storage) {
-  //     for (var i = 0; i < this._storage[key].length; i++) {
-  //       if (Array.isArray(this._storage[key][i])) {
-  //         tempStorage.push(this._storage[key][i]);
-  //       };
+  //     for ( var key in this._storage ) {
+  //       if ( Array.isArray( this._storage[ key ] )) {
+  //         _.each( this._storage[key], function( tuple ) {
+  //           tempStorage.push(tuple);
+  //         });
+  //       }
   //     }
-  //   };
+
   //   this._storage = LimitedArray(this._limit);
-  //   for (var i = 0; i < tempStorage.length; i++) {
-  //     this.insert(tempStorage[i][0], tempStorage[i][1]);
-  //   };
+  //   // this._length = 0;
+  //   for (var x = 0; x < tempStorage.length; x++) {
+      
+
+
+  //     // this.insert(tempStorage[x][0], tempStorage[x][1]);
+  //   }   
   // }
+  //   console.log("limit" + this._limit);
+  //     console.log("length" + this._length);
 
-  // var i = getIndexBelowMaxForKey(k, this._limit);
-  // // _.each(this._storage[i], function(val) {
+    ///////// HALVING END 
 
-  console.log(this._storage);
 
-  for (var x in this._storage) {
-
-    if (Array.isArray(this._storage[x])) {
-      for (var y = 0; y < this._storage[x].length; y++) {
-
-        console.log("KEY?");
-        console.log(this._storage[x]);
-        if (Array.isArray(this._storage[x]) && this._storage[x][y][0] === k) {
-          console.log("VAL")
-          console.log(this._storage[x][y]);
-          console.log("DELETING: " + this._storage[x]);
-          this._storage[x] =  this._storage[x].slice(0, y).concat(this._storage.slice(y+1));
+      _.each (this._storage[i], function (array, index, list) {
+        if ( array[0] === k ) {
+        list.splice(index, 1);
         }
-      }
-    }
-  }
+      });
+
+  
+
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+// storage :
+// {
+//   "1" : adsf,
+//   "2" : asd;f,
+//   "3" : adsfsdf
+// }
+
+//why can't we modify list?
+      // if ( array[0] === k ) {
+      //     console.log( index );
+      //     console.log( "list" + list);
+      //     console.log("first half" + ":" + list.slice(0, index) )
+      //     console.log("second half" + ":" + list.slice(index+1)  )
+      //    list = list.slice(0, index).concat( list.slice(index+1) );
+      //    console.log( "list" + list);
+      //   }
+      // });
